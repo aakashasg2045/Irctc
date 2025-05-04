@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Train Details</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f2f4f8;
+      }
+      #sidebar {
+        position: fixed;
+        top: 0;
+        right: -290px;
+        height: 100%;
+        width: 250px;
+        background: #f4f4f4;
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+        transition: right 0.3s ease;
+        padding: 20px;
+        z-index: 1000;
+      }
+      #sidebar.open {
+        right: 0;
+      }
+      #overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 999;
+      }
+      .topbar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        padding: 10px 20px;
+        background: #0078d7;
+        color: white;
+        cursor: pointer;
+        z-index: 1001;
+        font-size: 18px;
+        border-bottom-left-radius: 8px;
+      }
+      label {
+        margin: 10px 0 5px;
+        display: block;
+        font-weight: bold;
+      }
+      input,
+      select {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        background: #0078d7;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #005fa3;
+      }
+      .reminder {
+        background: #d9edf7;
+        padding: 10px;
+        margin-top: 20px;
+        border-left: 5px solid #31708f;
+      }
+      #paymentModal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1002;
+      }
+      .payment-options button {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+        padding: 10px;
+        background: #0078d7;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+        text-align: left;
+      }
+      .payment-options button:hover {
+        background: #005fa3;
+      }
+      .payment-options {
+        background-color: #f4f4f4;
+        border-radius: 8px;
+      }
+      .payment-options button i {
+        margin-right: 10px;
+      }
+      .close-btn {
+        float: right;
+        background: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+      #sidebar button {
+        width: 100%;
+        margin: 10px 0;
+        padding: 10px;
+        background: #0078d7;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+      #sidebar button:hover {
+        background: #005fa3;
+      }
+      #sidebar h4 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: #333;
+      }
+      .success-message {
+        margin-top: 15px;
+        color: green;
+        font-weight: bold;
+      }
+      .checkmark {
+        border-radius: 50%;
+        padding: 10px;
+        background-color: green;
+        color: white;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        font-size: 24px;
+        display: inline-block;
+        margin-top: 10px;
+        opacity: 0;
+        transform: scale(0);
+        animation: checkmarkAnimation 1s forwards;
+      }
+      @keyframes checkmarkAnimation {
+        0% {
+          opacity: 0;
+          transform: scale(0);
+        }
+        60% {
+          opacity: 1;
+          transform: scale(1.2);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      .loader {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #0078d7;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 2s linear infinite;
+        margin-top: 15px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      #trackWarningModal,
+      #weatherWarningModal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        z-index: 1003;
+        max-width: 400px;
+        width: 90%;
+        animation: slideIn 0.5s ease;
+      }
+
+      @keyframes slideIn {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.5);
+        }
+        100% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+
+      .track-warning-header {
+        font-size: 18px;
+        font-weight: bold;
+        color: #f0ad4e;
+      }
+
+      .track-warning-message {
+        font-size: 16px;
+        color: #5bc0de;
+        margin-top: 10px;
+      }
+
+      .close-warning-btn {
+        margin-top: 20px;
+        background: #d9534f;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+
+      .close-warning-btn:hover {
+        background: #c9302c;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar" id="topbar" onclick="toggleSidebar()">More Options</div>
+    <div
+      class="topbar"
+      id="closebar"
+      onclick="closeSidebar()"
+      style="display: none"
+    >
+      ×
+    </div>
+    <div id="overlay" onclick="closeSidebar()"></div>
+
+    <div id="sidebar">
+      <h4>Options</h4>
+      <button onclick="showPaymentModal()">🚨 Stop Train</button>
+      <button onclick="showTrackWarning()">⚠️ Track Warning</button>
+      <button onclick="showWeatherWarning()">🌧️ Weather Warning</button>
+    </div>
+
+    <h2>Enter Train Details</h2>
+    <label for="name">Passenger Name</label>
+    <input type="text" id="name" placeholder="e.g. Rajeev Sharma" />
+
+    <label for="train">Train Number</label>
+    <input type="text" id="train" placeholder="e.g. 12345" />
+
+    <label for="seat">Seat Number</label>
+    <input type="text" id="seat" placeholder="e.g. B2-45" />
+
+    <label for="coach">Coach Type</label>
+    <select id="coach">
+      <option value="">Select Coach</option>
+      <option value="SL">Sleeper</option>
+      <option value="3A">3rd AC</option>
+      <option value="2A">2nd AC</option>
+      <option value="1A">1st AC</option>
+    </select>
+
+    <button onclick="submitDetails()">Submit Details</button>
+
+    <div id="info"></div>
+    <div id="reminders"></div>
+
+    <div id="paymentModal">
+      <button class="close-btn" onclick="closePaymentModal()">X</button>
+      <h3>Stop Train</h3>
+      <p>Amount to pay: ₹1500</p>
+      <div class="payment-options">
+        <button onclick="showPaymentOptions('Credit Card')">
+          💳 Credit Card
+        </button>
+        <button onclick="showPaymentOptions('Net Banking')">
+          🏦 Net Banking
+        </button>
+        <button onclick="showPaymentOptions('PhonePe')">📱 PhonePe</button>
+        <button onclick="showPaymentOptions('Paytm')">👜 Paytm</button>
+      </div>
+      <div id="paymentOptions"></div>
+    </div>
+
+    <div id="trackWarningModal">
+      <div class="track-warning-header">⚠️ Track Maintenance Ahead!</div>
+      <div class="track-warning-message">
+        🚧 The track ahead is under maintenance. Expect delays at the next stop.
+      </div>
+      <button class="close-warning-btn" onclick="closeTrackWarning()">
+        Close
+      </button>
+    </div>
+
+    <div id="weatherWarningModal">
+      <div class="track-warning-header">🌧️ Weather Alert</div>
+      <div class="track-warning-message">
+        Heavy rain expected. Please stay alert and avoid leaning out of windows.
+      </div>
+      <button class="close-warning-btn" onclick="closeWeatherWarning()">
+        Close
+      </button>
+    </div>
+
+    <script>
+      let stationIndex = 0;
+      const stations = [
+        "New Delhi",
+        "Kanpur Central",
+        "Prayagraj",
+        "Pt. Deen Dayal Upadhyay",
+        "Patna",
+      ];
+      const times = ["2 min", "5 min", "1 min", "3 min", "4 min"];
+
+      function toggleSidebar() {
+        document.getElementById("sidebar").classList.add("open");
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("topbar").style.display = "none";
+        document.getElementById("closebar").style.display = "block";
+      }
+
+      function closeSidebar() {
+        document.getElementById("sidebar").classList.remove("open");
+        document.getElementById("overlay").style.display = "none";
+        document.getElementById("topbar").style.display = "block";
+        document.getElementById("closebar").style.display = "none";
+      }
+
+      function submitDetails() {
+        const name = document.getElementById("name").value;
+        const train = document.getElementById("train").value;
+        const seat = document.getElementById("seat").value;
+        const coach = document.getElementById("coach").value;
+
+        if (!name || !train || !seat || !coach) {
+          alert("Please fill in all the fields.");
+          return;
+        }
+
+        document.getElementById(
+          "info"
+        ).innerHTML = `<h3>Train Stops</h3><ul>${stations
+          .map((s, i) => {
+            return `<li>${
+              i === stationIndex % stations.length ? "🚂 Track - " + s : s
+            }</li>`;
+          })
+          .join("")}</ul>`;
+        showReminder();
+        setInterval(showReminder, 10000);
+      }
+
+      function showReminder() {
+        const current = stations[stationIndex % stations.length];
+        const time = times[stationIndex % times.length];
+        document.getElementById(
+          "reminders"
+        ).innerHTML = `<div class='reminder'>🚉 Track - ${current}. Will depart in ${time}.</div>`;
+        stationIndex++;
+        document.getElementById(
+          "info"
+        ).innerHTML = `<h3>Train Stops</h3><ul>${stations
+          .map((s, i) => {
+            return `<li>${
+              i === stationIndex % stations.length ? "🚂 Track - " + s : s
+            }</li>`;
+          })
+          .join("")}</ul>`;
+      }
+
+      function showPaymentModal() {
+        document.getElementById("paymentModal").style.display = "block";
+      }
+
+      function closePaymentModal() {
+        document.getElementById("paymentModal").style.display = "none";
+        document.getElementById("paymentOptions").innerHTML = "";
+      }
+
+      function showPaymentOptions(option) {
+        const phoneInput = `
+          <label for="phone">Enter your phone number for ${option} payment:</label>
+          <input type="text" id="phone" placeholder="e.g. 9876543210" />
+          <button onclick="simulatePayment()">Continue</button>
+        `;
+        document.getElementById("paymentOptions").innerHTML = phoneInput;
+      }
+
+      function simulatePayment() {
+        const phone = document.getElementById("phone").value;
+        if (phone) {
+          document.getElementById(
+            "paymentOptions"
+          ).innerHTML = `<div class="loader"></div>`;
+          setTimeout(() => {
+            document.getElementById("paymentOptions").innerHTML = `
+              <div class="checkmark">✔</div>
+              <div class="success-message">Payment successful. Confirmation sent to ${phone}</div>
+            `;
+          }, 2000);
+        } else {
+          alert("Please enter a valid phone number.");
+        }
+      }
+
+      function showTrackWarning() {
+        document.getElementById("trackWarningModal").style.display = "block";
+      }
+
+      function closeTrackWarning() {
+        document.getElementById("trackWarningModal").style.display = "none";
+      }
+
+      function showWeatherWarning() {
+        document.getElementById("weatherWarningModal").style.display = "block";
+      }
+
+      function closeWeatherWarning() {
+        document.getElementById("weatherWarningModal").style.display = "none";
+      }
+    </script>
+  </body>
+</html>

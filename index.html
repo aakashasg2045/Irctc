@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRCTC Next Generation eTicketing System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./Images/logoicon.jpg" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo1"><img src="./Images/navlogo1.png" alt=""></div>
+            <div class="container_lists">
+                <div class="uppercontainer">
+                    <a href="#">LOGIN</a>
+                    <a href="#">REGISTER</a>
+                    <a href="#">AGENT LOGIN</a>
+                    <a href="#">CONTACT US</a>
+                    <a href="#">HELP & SUPPORT</a>
+                    <a href="#">DAILY DEALS</a>
+                    <a onclick="showPopup()" class="tag3" href="#">GET LIVE</a>
+                    <div id="time-container"></div>
+                    <div class="font-controls">
+                        <span onclick="changeFontSize(-2)">A-</span>
+                        <span onclick="resetFontSize()">A</span>
+                        <span onclick="changeFontSize(2)">A+</span>
+                    </div>
+                    <a href="./trainremainder.html" style="position: relative;">Remainder<p class="newtag" style="top: -13px; right: -7px; font-size: 12px;">New</p></a>
+                    <a href="#">हिंदी</a>
+                </div>
+                <div class="lowercontainer">
+                    <div class="nav-item home-icon">
+                        <i class="fa fa-home"></i>
+                      </div>
+                      <div class="nav-item active">IRCTC EXCLUSIVE</div>
+                      <div class="nav-item orange-border">TRAINS</div>
+                      <div class="nav-item">LOYALTY</div>
+                      <div class="nav-item underline">IRCTC eWallet</div>
+                      <div class="nav-item">BUSES</div>
+                      <div class="nav-item">FLIGHTS</div>
+                      <div class="nav-item">HOTELS</div>
+                      <div class="nav-item">HOLIDAYS</div>
+                      <div class="nav-item">MEALS</div>
+                      <div class="nav-item">PROMOTIONS</div>
+                      <div onclick="toggleChatbot()" class="nav-item" style="position: relative;">CHAT BOT<p class="newtag">New</p></div>
+                      <button id="dark-mode-toggle" class="dark-mode-btn">🌙<p class="newtag tag4">New</p></button>
+
+                </div>
+            </div>
+            <div class="logo2"><img src="./Images/navlogo2.png" alt=""></div>
+        </nav>
+    </header>
+    <!-- ---------------------------overaly new getlive page------------------ -->
+    <div id="overlay"></div>
+    <div id="popup">
+      <h3>Important Rules</h3>
+      <p>
+        1. Carry valid ID proof.<br />2. Do not engage in unauthorized
+        ticketing.<br />3. Maintain cleanliness.<br />4. Follow COVID protocols.
+      </p>
+      <button class="btn_getlive" onclick="continuePage()">Continue</button>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- ------------------------------------------------------------ -->
+    <div class="right_bar_chat">
+        <div id="chatbot-toggle" onclick="toggleChatbot()">💬<p class="newtag tag2">New</p></div>
+        <div id="chatbot-sidebar">
+        <div class="chat-header">
+            <h3>IRCTC ChatBot</h3>
+            <span onclick="toggleChatbot()">&times;</span>
+        </div>
+        <div class="div" style="padding: 15px 0 0 10px;">Welcome to IRCTC SERVICES</div>
+        <div id="chatbox">
+            <!-- Welcome messages will be dynamically inserted -->
+        </div>
+        <input type="text" id="user-input" placeholder="Enter your name and details to begin..." onkeypress="handleInitialKey(event)" />
+        </div>
+  
+    </div>
+
+
+    <!-- ---section home page ---------------------- -->
+    <section class="home">
+        <div class="main_homeimg">
+            <img src="./Images/trainhome.png" alt="">
+        </div>
+        <div class="booking-container">
+
+            <!-- Top Navigation Buttons -->
+            <div class="nav-buttons">
+              <button class="nav-btn"><i class="fa fa-ticket"></i> PNR STATUS</button>
+              <button class="nav-btn"><i class="fa fa-list"></i> CHARTS / VACANCY</button>
+            </div>
+        
+            <h2 class="title">BOOK TICKET</h2>
+        
+            <!-- Booking Form -->
+            <form class="booking-form">
+        
+              <div class="row">
+                <div class="input-group">
+                  <i class="fa fa-location-arrow icon"></i>
+                  <input type="text" placeholder="From">
+                </div>
+                <div class="input-group">
+                  <label class="date-label">DD/MM/YYYY *</label>
+                  <input type="date" value="2025-05-03">
+                </div>
+              </div>
+        
+              <div class="row">
+                <div class="input-group">
+                  <i class="fa fa-map-marker-alt icon"></i>
+                  <input type="text" placeholder="To">
+                </div>
+                <div class="input-group">
+                  <i class="fa fa-briefcase icon"></i>
+                  <select>
+                    <option>All Classes</option>
+                  </select>
+                </div>
+              </div>
+        
+              <div class="row">
+                <div class="input-group full-width">
+                  <i class="fa fa-th-large icon"></i>
+                  <select>
+                    <option>GENERAL</option>
+                  </select>
+                </div>
+              </div>
+        
+              <!-- Checkboxes -->
+              <div class="checkbox-group">
+                <label><input type="checkbox"> Person With Disability Concession</label>
+                <label><input type="checkbox"> Flexible With Date</label>
+                <label><input type="checkbox"> Train with Available Berth</label>
+                <label><input type="checkbox"> Railway Pass Concession</label>
+              </div>
+        
+              <!-- Action Buttons -->
+              <div class="action_buttons">
+                <button class="search-btn">Search</button>
+                <button class="ask-btn">Easy Booking on AskDISHA</button>
+              </div>
+            </form>
+    </section>
+    <section class="secondpage">
+        <div class="spcontainer">
+            <h1>Have you not found the right one?<br><span>Find a service suitable for you here.</span></h1>
+            <div class="services">
+              <div class="service"><i class="fas fa-plane"></i><p>FLIGHTS</p></div>
+              <div class="service"><i class="fas fa-hotel"></i><p>HOTELS</p></div>
+              <div class="service"><i class="fas fa-chart-line"></i><p>RAIL DRISHTI</p></div>
+              <div class="service"><i class="fas fa-utensils"></i><p>E-CATERING</p></div>
+              <div class="service"><i class="fas fa-bus"></i><p>BUS</p></div>
+        
+              <div class="service"><i class="fas fa-umbrella-beach"></i><p>HOLIDAY PACKAGES</p></div>
+              <div class="service"><i class="fas fa-train"></i><p>TOURIST TRAIN</p></div>
+              <div class="service"><i class="fas fa-mountain"></i><p>HILL RAILWAYS</p></div>
+              <div class="service"><i class="fas fa-subway"></i><p>CHARTER TRAIN</p></div>
+              <div class="service"><i class="fas fa-image"></i><p>GALLERY</p></div>
+            </div>
+        
+            <div class="banner">
+              <img src="./Images/gwb.jpeg" alt="Fraud Warning Banner">
+            </div>
+          </div>
+    </section>
+
+ <!-- footer ---------------------- -->
+ <footer>
+    <div class="social-section">
+      <p>Get Connected with us on social networks</p>
+      <div class="social-icons">
+        <i class="fab fa-facebook-f"></i>
+        <i class="fab fa-whatsapp"></i>
+        <i class="fab fa-youtube"></i>
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-linkedin-in"></i>
+        <i class="fab fa-telegram"></i>
+        <i class="fab fa-pinterest"></i>
+        <i class="fab fa-tumblr"></i>
+        <i class="fas fa-kiwi-bird"></i>
+        <i class="fab fa-twitter"></i>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <div>
+        <p>IRCTC Trains▼</p>
+        <p>General Information▼</p>
+        <p>Important Information▼</p>
+        <p>Agents▼</p>
+        <p>Enquiries▼</p>
+      </div>
+      <div>
+        <p>How To▼</p>
+        <p>IRCTC Official App▼</p>
+        <p>Advertise with us▼</p>
+        <p>Refund Rules▼</p>
+        <p>Person With Disability Facilities▼</p>
+      </div>
+      <div>
+        <p>IRCTC eWallet▼</p>
+        <p>Avail Loyalty Benefits▼</p>
+        <p>IRCTC-iPAY Payment Gateway▼</p>
+        <p>IRCTC Zone▼</p>
+        <p>DMRC Ticket Booking at IRCTC▼</p>
+      </div>
+      <div>
+        <p>For Newly Migrated Agents▼</p>
+        <p>Mobile Zone▼</p>
+        <p>Policies▼</p>
+        <p>Ask Disha ChatBot▼</p>
+        <p>About us▼</p>
+        <p><strong>Help & Support</strong></p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <img src="./Images/footer_sec.png" alt="Footer logos" />
+      <p>Copyright © 2025 - www.irctc.co.in. All Rights Reserved.<br/>
+      Designed and Hosted by CRIS</p>
+    </div>
+  </footer>
+
+    <script src="./script.js"></script>
+</body>
+</html>
